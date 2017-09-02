@@ -1,31 +1,24 @@
 import gi
 
-from binder.widgets.Headerbar import Headerbar
-
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk, GtkSource
+from gi.repository import Gtk
 
 
 class Window(Gtk.ApplicationWindow):
     def __init__(self, app: Gtk.Application, **kwargs):
         super().__init__(**kwargs)
         self.app = app
-        self.set_default_size(1100, 640)
-        self.set_titlebar(Headerbar())
+        self.set_default_size(860, 520)
 
-        pane1 = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL)
+        headerbar = self.app.get_object("headerbar")
+        pane = self.app.get_object("pane")
+        menu_button = self.app.get_object("menu_button")
+        search_button = self.app.get_object("search_button")
 
-        view = GtkSource.View()
-        view.set_can_focus(True)
-        view.set_visible(True)
+        menu_button.set_image(Gtk.Image.new_from_icon_name("open-menu", Gtk.IconSize.LARGE_TOOLBAR))
+        search_button.set_image(Gtk.Image.new_from_icon_name("edit-find-symbolic", Gtk.IconSize.LARGE_TOOLBAR))
 
-        sidebar = Gtk.Layout()
-
-        pane1.add1(sidebar)
-        pane1.add2(view)
-        pane1.set_position(180)
-        pane1.show_all()
-
-        self.add(pane1)
+        self.set_titlebar(headerbar)
+        self.add(pane)
         self.show_all()
