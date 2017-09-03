@@ -1,0 +1,11 @@
+#main_window {
+    transition-property: background-color;
+    transition-duration: 300ms;
+}
+
+#main_window.edit_mode {
+    background-color: #fff;
+}
+
+#main_window.view_mode {
+}

@@ -3,13 +3,6 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <requires lib="gtksourceview" version="3.0"/>
-  <object class="GtkApplicationWindow" id="main_window">
-    <property name="can_focus">False</property>
-    <property name="hide_titlebar_when_maximized">True</property>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
   <object class="GtkMenu" id="menu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -41,40 +34,51 @@
   <object class="GtkHeaderBar" id="headerbar">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title">Note Binder</property>
+    <property name="title">Notebooks Binder</property>
+    <property name="subtitle">Las modification 1 day ago</property>
     <property name="show_close_button">True</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="mode_buttons">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="homogeneous">True</property>
         <child>
-          <object class="GtkButton">
+          <object class="GtkRadioButton" id="view_mode">
             <property name="label" translatable="yes">Ver</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="receives_default">False</property>
             <property name="valign">center</property>
+            <property name="draw_indicator">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkRadioButton" id="edit_mode">
             <property name="label" translatable="yes">Editar</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="receives_default">False</property>
             <property name="valign">center</property>
+            <property name="draw_indicator">False</property>
+            <style>
+              <class name="raised"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
+        <style>
+          <class name="linked"/>
+          <class name="raised"/>
+        </style>
       </object>
     </child>
     <child>
@@ -82,9 +86,15 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">True</property>
+        <property name="relief">none</property>
         <property name="popup">menu</property>
         <child>
-          <placeholder/>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">open-menu</property>
+            <property name="icon_size">3</property>
+          </object>
         </child>
       </object>
       <packing>
@@ -111,7 +121,12 @@
                 <property name="relief">none</property>
                 <property name="always_show_image">True</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">edit-find-symbolic</property>
+                    <property name="icon_size">3</property>
+                  </object>
                 </child>
               </object>
             </child>

@@ -16,12 +16,9 @@ usage = _("usage: %prog")
 
 
 class Command:
-    parser = OptionParser(
-        usage=usage,
-        version='%prog 0.1.dev1',
-    )
+    parser = OptionParser(usage=usage, version='%prog 0.1')
 
     def run(self):
-        (options, args) = self.parser.parse_args()
+        options, args = self.parser.parse_args()
         app = Application()
         app.run(sys.argv)
