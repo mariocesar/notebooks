@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog name="granite"
+               domain="glade-3"
+               depends="gtk+"
+               library="granite-1.0"
+               book="granite">
+    <glade-widget-classes>
+        <glade-widget-class name="WidgetsSourceList"
+                            generic-name="sourcelist"
+                            parent="GtkScrolledWindow"
+                            title="SourceList"/>
+    </glade-widget-classes>
+    <glade-widget-group name="Granite" title="Granite">
+        <glade-widget-class-ref name="WidgetsSourceList "/>
+    </glade-widget-group>
+</glade-catalog>

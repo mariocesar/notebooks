@@ -1,6 +1,7 @@
 import gi
 
 from binder.widgets.ModeButton import ModeButton
+from binder.widgets.Sidebar import Sidebar
 
 gi.require_version('Gtk', '3.0')
 
@@ -14,8 +15,14 @@ class Window(Gtk.ApplicationWindow):
         self.set_default_size(900, 520)
         self.set_name("main_window")
 
+        sidebar = Sidebar()
+        sidebar.show_all()
+
         headerbar = app.get_object("headerbar")
         pane = app.get_object("pane")
+        pane.pack1(sidebar, False, True)
+        pane.pack1(Gtk.Box(), False, True)
+
         self.modebuttons = ModeButton(app)
         self.modebuttons.connect('mode_changed', self.mode_changed)
 
@@ -24,7 +31,7 @@ class Window(Gtk.ApplicationWindow):
         self.show_all()
 
     def mode_changed(self, *args):
-        context = self.get_style_context() # type: Gtk.StyleContext
+        context = self.get_style_context()  # type: Gtk.StyleContext
         if context.has_class(self.modebuttons.VIEW_MODE):
             context.remove_class(self.modebuttons.VIEW_MODE)
         elif context.has_class(self.modebuttons.EDIT_MODE):
