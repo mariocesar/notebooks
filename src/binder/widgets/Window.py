@@ -1,39 +1,34 @@
-import gi
-
+from binder.widgets.ListView import ListView
 from binder.widgets.ModeButton import ModeButton
-from binder.widgets.Sidebar import Sidebar
-
-gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gtk
 
 
-class Window(Gtk.ApplicationWindow):
-    def __init__(self, app, **kwargs):
-        super().__init__(**kwargs)
-        self.set_application(app)
-        self.set_default_size(900, 520)
-        self.set_name("main_window")
+class WindowHandler:
+    _widget = None
 
-        sidebar = Sidebar()
-        sidebar.show_all()
+    def __init__(self, app):
+        self.app = app
+        self.edit_button = self.app.builder.get_object('edit_mode')
+        self.view_button = self.app.builder.get_object('view_mode')
 
-        headerbar = app.get_object("headerbar")
-        pane = app.get_object("pane")
-        pane.pack1(sidebar, False, True)
-        pane.pack1(Gtk.Box(), False, True)
+        self.modes = ModeButton('view_mode', self.edit_button, self.view_button)
+        self.modes.connect('mode_changed', self.main_window_mode_changed)
+        self.main_window_mode_changed()
 
-        self.modebuttons = ModeButton(app)
-        self.modebuttons.connect('mode_changed', self.mode_changed)
+        self.list_view = ListView(self.app)
 
-        self.set_titlebar(headerbar)
-        self.add(pane)
-        self.show_all()
+    @property
+    def widget(self):
+        if not self._widget:
+            self._widget = self.app.builder.get_object('main_window')
+            self.app.builder.connect_signals(self)
+        return self._widget
 
-    def mode_changed(self, *args):
-        context = self.get_style_context()  # type: Gtk.StyleContext
-        if context.has_class(self.modebuttons.VIEW_MODE):
-            context.remove_class(self.modebuttons.VIEW_MODE)
-        elif context.has_class(self.modebuttons.EDIT_MODE):
-            context.remove_class(self.modebuttons.EDIT_MODE)
-        context.add_class(self.modebuttons.current_mode)
+    def main_window_mode_changed(self, *args):
+        context = self.widget.get_style_context()
+
+        if context.has_class('view_mode'):
+            context.remove_class('view_mode')
+        elif context.has_class('edit_mode'):
+            context.remove_class('edit_mode')
+
+        context.add_class(self.modes.selected_action)

@@ -11,6 +11,7 @@ class Item(GObject.GObject):
     def __init__(self, name):
         self.name = name
 
+
 class ExpandableItem(GObject.GObject):
     __gsignals__ = {
         'child_added': (GObject.SIGNAL_RUN_FIRST, None, (Item,)),
@@ -34,7 +35,6 @@ class ExpandableItem(GObject.GObject):
     def clear(self):
         for children in self.children_list:
             self.remove(children)
-
 
 
 class Sidebar(Gtk.ScrolledWindow):

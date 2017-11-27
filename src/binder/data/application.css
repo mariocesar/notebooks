@@ -1,11 +1,12 @@
-#main_window {
+GtkApplicationWindow {
     transition-property: background-color;
     transition-duration: 300ms;
 }
 
-#main_window.edit_mode {
-    background-color: #fff;
+GtkApplicationWindow.edit_mode {
+    background-color: #ffe43e;
 }
 
-#main_window.view_mode {
+GtkApplicationWindow.view_mode {
+
 }

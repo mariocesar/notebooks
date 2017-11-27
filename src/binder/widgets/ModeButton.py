@@ -1,3 +1,5 @@
+from typing import List
+
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -6,38 +8,36 @@ from gi.repository import Gtk, GObject
 
 
 class ModeButton(GObject.GObject):
-    EDIT_MODE = 'edit_mode'
-    VIEW_MODE = 'view_mode'
-
-    _mode = VIEW_MODE
+    selected_action = None
+    selected_widget = None
 
     __gsignals__ = {
         'mode_changed': (GObject.SIGNAL_RUN_FIRST, None, (str,))
     }
 
-    def __init__(self, app):
+    def __init__(self, selected_action: str, *options: List[Gtk.RadioButton]):
         super().__init__()
+        self.get_name = Gtk.Buildable.get_name
 
-        edit_button = app.get_object(self.EDIT_MODE)  # type: Gtk.RadioButton
-        view_button = app.get_object(self.VIEW_MODE)  # type: Gtk.RadioButton
+        _options = map(lambda opt: self.get_name(opt) == selected_action, options)
+        assert any(_options), 'Selected action not in options'
 
-        view_button.join_group(edit_button)
-        view_button.set_active(True)
+        self.selected_action = selected_action
 
-        edit_button.connect_after('toggled', self.toggled_mode)
-        view_button.connect_after('toggled', self.toggled_mode)
+        for option in options:
+            name = self.get_name(option)
 
-    @property
-    def current_mode(self):
-        return self._mode
+            if name == self.selected_action:
+                option.set_active(True)
+                self.selected_action = name
+                self.selected_widget = option
 
-    @current_mode.setter
-    def current_mode(self, value):
-        if value not in (self.EDIT_MODE, self.VIEW_MODE):
-            raise ValueError("Wrong mode")
-        self._mode = value
-        self.emit('mode_changed', self._mode)
+            option.connect_after('toggled', self.toggled_mode)
 
     def toggled_mode(self, widget: Gtk.RadioButton):
         if widget.get_active():
-            self.current_mode = Gtk.Buildable.get_name(widget)
+            self.selected_action = self.get_name(widget)
+            self.selected_widget = widget
+
+            if self.selected_widget:
+                self.emit('mode_changed', self.selected_action)
